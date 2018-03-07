@@ -3,6 +3,7 @@ package com.platform.rmodel.user;
 public class UserInfoRequest {
 	private String stuid;
 	private Integer is_manageId;
+	//是否需要管理员的id 0不需要 1需要
 	
 
 	public String getStuid() {

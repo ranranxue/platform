@@ -14,7 +14,7 @@ public interface Manage_scopeDAO {
 	@Select("select grade from manage_scope where manager_id=#{manager_id}")
 	public List<String>  getManageGradeList(@Param("manager_id") String manager_id );
 	//限制每个普通管理员不可以管理相同的年级
-	@Select("select manager_id from manage_scope where grade=#{grade} where isManager!=2")
+	@Select("select manager_id from manage_scope where grade=#{grade} and isManager!=2")
 	public String getManagerIdByGrade(@Param("grade") String grade);
 	
 	
