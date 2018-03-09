@@ -19,7 +19,7 @@ public interface UserDAO {
 	 * @param loginName
 	 * @return
 	 */
-	@Select("select stuid ,name,nickname,gender,self_introduction,grade,phone,email,head_url,isManager from user where stuid=#{loginName}")
+	@Select("select stuid ,name,nickname,gender,self_introduction,grade,phone,email,head_url,isManager,detail_introduction from user where stuid=#{loginName}")
 	public User getUserInfo(@Param("loginName") String loginName);
 	/**
 	 * 根据用户的唯一标识来获取用户的姓名，性别，自我介绍，背景图片和头像图片等

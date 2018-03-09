@@ -269,7 +269,7 @@ public class UserController {
 		}
 		UserInfoRequest request = new UserInfoRequest();
 		request.setStuid(requestParams.get(paras[0]));
-		request.setIs_manageId(DataTypePaserUtil.StringToInteger(requestParams.get(paras[0])));
+		request.setIs_manageId(DataTypePaserUtil.StringToInteger(requestParams.get(paras[1])));
 
 		HomePageResponse response = null;
 		try {

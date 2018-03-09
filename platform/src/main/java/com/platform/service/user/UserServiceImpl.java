@@ -241,7 +241,7 @@ public class UserServiceImpl implements UserService {
 				return response;
 			}
 			if(managerId=="0"){
-				logger.debug("fail to get managerId");
+				logger.error("fail to get managerId");
 				HomePageResponse response = new HomePageResponse();
 				response.setCode(ApiResultInfo.ResultCode.ServerError);
 				response.setMsg(ApiResultInfo.ResultMsg.ServerError);
