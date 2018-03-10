@@ -297,16 +297,16 @@ public class UserController {
 	private @ResponseBody ApiResult modifyPersonInfo(HttpServletRequest requestHttp, HttpServletResponse responseHttp) {
 		responseHttp.setHeader("Access-Control-Allow-Origin", "*");
 		Map<String, String> requestParams = RequestUtil.getParameterMap(requestHttp);
-		String[] paras = { "ticket", "nickName", "name", "gender", "self_introduction", "phone", "email" };
+		String[] paras = { "stuid", "nickName", "name", "gender", "self_introduction", "phone", "email" };
 		boolean flag = RequestUtil.validate(paras, requestParams);
 		if (flag == false) {
 			logger.error(ApiResultInfo.ResultMsg.RequiredParasError);
 			return ApiResultFactory.getLackParasError();
 		}
-		// 除了登陆和退出外都需要检查sessionKey来获取用户的唯一标识stuid
-		String stuid = RedisUtil.get(requestParams.get(paras[0]));
+		
+		
 		PersonInfoEditRequest request = new PersonInfoEditRequest();
-		request.setStuid(stuid);
+		request.setStuid(requestParams.get(paras[0]));
 		request.setNickName(requestParams.get(paras[1]));
 		request.setName(requestParams.get(paras[2]));
 		request.setGender(requestParams.get(paras[3]));
