@@ -632,6 +632,19 @@ public class UserServiceImpl implements UserService {
 			response.setMsg(ApiResultInfo.ResultMsg.ServerError);
 			return response;
 		}
+		String head_url="";
+		try {
+			logger.debug("get head_url from user db using stuid"+request.getStuid());
+			head_url=userDAO.getHead_urlByStuid(request.getStuid());
+		} catch (Exception e) {
+			// TODO: handle exception
+			logger.error("userService error", e);
+			PersonInfoEditResponse response = new PersonInfoEditResponse();
+			response.setCode(ApiResultInfo.ResultCode.ServerError);
+			response.setMsg(ApiResultInfo.ResultMsg.ServerError);
+			return response;
+		}
+		
 		logger.debug("update the user info successfully!");
 		PersonInfoEditResponse response = new PersonInfoEditResponse();
 		response.setCode(0);
@@ -642,6 +655,7 @@ public class UserServiceImpl implements UserService {
 		response.setSelf_introduction(request.getSelf_introduction());
 		response.setPhone(request.getPhone());
 		response.setEmail(request.getEmail());
+		response.setHead_url(StaticData.QiNiuFilePath+head_url);
 		return response;
 	}
 

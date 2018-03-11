@@ -5,6 +5,7 @@ import com.platform.model.BasicResponse;
 public class PersonInfoEditResponse extends BasicResponse{
 	private String nickName;
 	private String name;
+	private String head_url;
 	private String gender;
 	private String self_introduction;
 	private String phone;
@@ -44,6 +45,12 @@ public class PersonInfoEditResponse extends BasicResponse{
 	}
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	public String getHead_url() {
+		return head_url;
+	}
+	public void setHead_url(String head_url) {
+		this.head_url = head_url;
 	}
 	
 

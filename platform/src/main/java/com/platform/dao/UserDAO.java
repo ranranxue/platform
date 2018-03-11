@@ -188,6 +188,14 @@ public interface UserDAO {
 	 */
 	@Select("select stuid ,name ,head_url,self_introduction from user where class_info=#{class_info}")
 	public List<UserInfo> getUserInfoByClass(@Param("class_info") String class_info);
+	/**
+	 * 根据用户的学号获取用户的头像信息
+	 * @param stuid
+	 * @return
+	 */
+	@Select("select head_url from user where stuid=#{stuid}")
+	public String getHead_urlByStuid(@Param("stuid") String stuid);
+	
 	
 	
 	
