@@ -290,6 +290,9 @@ public class TopicServiceImpl implements TopicService {
 			response.setMsg(ApiResultInfo.ResultMsg.ServerError);
 			return response;
 		}
+		
+		logger.debug("*****发帖的用户名"+user.getName()); 
+		
 		List<Topic> topicList = null;
 		try {
 			logger.debug(" get the topicList from db using topic_id" + request.getTopic_id());
@@ -319,7 +322,7 @@ public class TopicServiceImpl implements TopicService {
 			try {
 				logger.debug("get the author_name and author_url from user db using suthor_id"
 						+ topicList.get(i).getAuthor_id());
-				replyUser = userDAO.getUserInfo(topic.getAuthor_id());
+				replyUser = userDAO.getUserInfo(topicList.get(i).getAuthor_id());
 			} catch (Exception e) {
 				// TODO: handle exception
 				logger.error("userDAO error", e);
@@ -338,6 +341,7 @@ public class TopicServiceImpl implements TopicService {
 			}
 			replyTopic.setAuthor_id(topicList.get(i).getAuthor_id());
 			replyTopic.setAuthor_name(replyUser.getName());
+			logger.debug("******回帖子的用户名"+replyUser.getName());
 			replyTopic.setAuthor_url(StaticData.QiNiuFilePath + replyUser.getHead_url());
 			replyTopic.setGood(topicList.get(i).getGood());
 			replyTopic.setBad(topicList.get(i).getBad());
@@ -411,6 +415,7 @@ public class TopicServiceImpl implements TopicService {
 					return response;
 				}
 				comment.setAuthor_name(author_name);
+				logger.debug("******评论的用户名"+author_name);
 				comment.setCreate_time(commentList.get(j).getCreate_time());
 				commentInfoList.add(comment);
 			}
@@ -445,6 +450,9 @@ public class TopicServiceImpl implements TopicService {
 		response.setContent(topic.getContent());
 		response.setAuthor_id(topic.getAuthor_id());
 		response.setAuthor_name(user.getName());
+		
+		
+		
 		response.setAuthor_url(StaticData.QiNiuFilePath + user.getHead_url());
 		response.setGood(topic.getGood());
 		response.setBad(topic.getBad());

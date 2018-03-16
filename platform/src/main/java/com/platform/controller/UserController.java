@@ -381,16 +381,16 @@ public class UserController {
 	private @ResponseBody ApiResult updatePassword(HttpServletRequest requestHttp, HttpServletResponse responseHttp) {
 		responseHttp.setHeader("Access-Control-Allow-Origin", "*");
 		Map<String, String> requestParams = RequestUtil.getParameterMap(requestHttp);
-		String[] paras = { "ticket", "oldPassword", "newPassword" };
+		String[] paras = { "stuid", "oldPassword", "newPassword" };
 		boolean flag = RequestUtil.validate(paras, requestParams);
 		if (flag == false) {
 			logger.error(ApiResultInfo.ResultMsg.RequiredParasError);
 			return ApiResultFactory.getLackParasError();
 		}
-		String stuid = RedisUtil.get(requestParams.get(paras[0]));
+		
 
 		PasswordUpdateRequest request = new PasswordUpdateRequest();
-		request.setStuid(stuid);
+		request.setStuid(requestParams.get(paras[0]));
 		request.setOldPassword(requestParams.get(paras[1]));
 		request.setNewPassword(requestParams.get(paras[2]));
 		BasicResponse response = null;
