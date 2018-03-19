@@ -195,6 +195,18 @@ public interface UserDAO {
 	 */
 	@Select("select head_url from user where stuid=#{stuid}")
 	public String getHead_urlByStuid(@Param("stuid") String stuid);
+	/**
+	 * 获取所有的普通管理员
+	 * @return
+	 */
+	@Select("select stuid from user where isManager=1")
+	public List<String> getAllManagers();
+	/**
+	 * 
+	 * @return
+	 */
+	@Select("select DISTINCT grade from user where isManager=0 order by grade")
+	public List<String> getAllGrades();
 	
 	
 	

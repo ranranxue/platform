@@ -27,7 +27,8 @@ public class ApiResultInfo {
 		public final static String UploadFileError="Upload File Error";
 		public final static String SaveLocalFileError="save local file error";
 		public final static String SessionKeyInvalid="sessionKey invalid";
-		
+		public final static String NoManagerAuthority="no authority to manage manager";
+		public final static String NoOtherManagers="no other managers except super manager";
 	}
 	public class ResultCode {
 
@@ -50,6 +51,9 @@ public class ApiResultInfo {
 		public final static int UploadFileError=17;
 		public final static int SaveLocalFileError=18;
 		public final static int SessionKeyInvalid=19;
+		public final static int NoManagerAuthority=20;
+		public final static int NoOtherManagers=21;
+		
 	}
 
 }
