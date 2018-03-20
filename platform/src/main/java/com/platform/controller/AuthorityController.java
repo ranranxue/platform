@@ -34,7 +34,7 @@ public class AuthorityController {
 		this.authorityService = authorityService;
 	}
 
-	@RequestMapping("student_authority")
+	@RequestMapping("student/authority")
 	private @ResponseBody ApiResult getStudentAuthority(HttpServletRequest requestHttp) {
 		StudentAuthorityResponse response = null;
 		try {
@@ -60,7 +60,7 @@ public class AuthorityController {
 		return new ApiResult(response);
 	}
 
-	@RequestMapping("manage_authority")
+	@RequestMapping("manage/authority")
 	private @ResponseBody ApiResult getManagerAuthority(HttpServletRequest requestHttp) {
 		Map<String, String> requestParams = RequestUtil.getParameterMap(requestHttp);
 		String[] paras = { "level" };
