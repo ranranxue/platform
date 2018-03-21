@@ -13,9 +13,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.platform.data.ApiResult;
 import com.platform.data.ApiResultFactory;
 import com.platform.data.ApiResultInfo;
+import com.platform.model.BasicResponse;
 import com.platform.rmodel.authority.ManagerAuthorityRequest;
 import com.platform.rmodel.authority.ManagerAuthorityResponse;
 import com.platform.rmodel.authority.StudentAuthorityResponse;
+import com.platform.rmodel.authority.saveManagerAuthorityRequest;
+import com.platform.rmodel.authority.saveStudentAuthorityRequest;
 import com.platform.service.authority.AuthorityService;
 import com.platform.util.DataTypePaserUtil;
 import com.platform.util.RequestUtil;
@@ -94,5 +97,75 @@ public class AuthorityController {
 		}
 		return new ApiResult(response);
 	}
+
+	@RequestMapping("student_authority/save")
+	private @ResponseBody ApiResult saveStudentAuthority(HttpServletRequest requestHttp) {
+		Map<String, String> requestParams = RequestUtil.getParameterMap(requestHttp);
+		String[] paras = { "classification", "value" };
+		boolean flag = RequestUtil.validate(paras, requestParams);
+		if (flag == false) {
+			logger.error(ApiResultInfo.ResultMsg.RequiredParasError);
+			return ApiResultFactory.getLackParasError();
+		}
+		saveStudentAuthorityRequest request = new saveStudentAuthorityRequest();
+		request.setClassification(DataTypePaserUtil.StringToInteger(requestParams.get(paras[0])));
+		request.setValue(DataTypePaserUtil.StringToInteger(requestParams.get(paras[1])));
+		BasicResponse response = null;
+		try {
+			logger.debug("start to save student authority using authorityService");
+			response = authorityService.saveStudentAuthority(request);
+		} catch (Exception e) {
+			// TODO: handle exception
+			logger.error(ApiResultInfo.ResultMsg.ServerError);
+			return ApiResultFactory.getServerError();
+		}
+		// 判断服务是否正常返回
+		if (response == null) {
+			logger.error("BasicResponse is null");
+			return ApiResultFactory.getServerError();
+		}
+
+		// 通过返回码的数值，判断服务结果是否为正确的结果
+		if (response.getCode() != 0) {
+			logger.error("there are errors in service");
+			return new ApiResult(response.getCode(), response.getMsg());
+		}
+		return new ApiResult(response);
+	}
+	@RequestMapping("manage_authority/save")
+	private @ResponseBody ApiResult saveManagerAuthority(HttpServletRequest requestHttp) {
+		Map<String, String> requestParams = RequestUtil.getParameterMap(requestHttp);
+		String[] paras = { "managerId", "value" };
+		boolean flag = RequestUtil.validate(paras, requestParams);
+		if (flag == false) {
+			logger.error(ApiResultInfo.ResultMsg.RequiredParasError);
+			return ApiResultFactory.getLackParasError();
+		}
+		saveManagerAuthorityRequest request = new saveManagerAuthorityRequest();
+		request.setManagerId(requestParams.get(paras[0]));
+		request.setGrade(requestParams.get(paras[1]));
+		BasicResponse response = null;
+		try {
+			logger.debug("start to save student authority using authorityService");
+			response = authorityService.saveManagerAuthority(request);
+		} catch (Exception e) {
+			// TODO: handle exception
+			logger.error(ApiResultInfo.ResultMsg.ServerError);
+			return ApiResultFactory.getServerError();
+		}
+		// 判断服务是否正常返回
+		if (response == null) {
+			logger.error("BasicResponse is null");
+			return ApiResultFactory.getServerError();
+		}
+
+		// 通过返回码的数值，判断服务结果是否为正确的结果
+		if (response.getCode() != 0) {
+			logger.error("there are errors in service");
+			return new ApiResult(response.getCode(), response.getMsg());
+		}
+		return new ApiResult(response);
+	}
+
 
 }

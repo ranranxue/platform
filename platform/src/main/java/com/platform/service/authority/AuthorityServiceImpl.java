@@ -11,11 +11,14 @@ import com.platform.dao.Manage_scopeDAO;
 import com.platform.dao.Stu_limitDAO;
 import com.platform.dao.UserDAO;
 import com.platform.data.ApiResultInfo;
+import com.platform.model.BasicResponse;
 import com.platform.model.Stu_limit;
 import com.platform.rmodel.authority.Manage_scope;
 import com.platform.rmodel.authority.ManagerAuthorityRequest;
 import com.platform.rmodel.authority.ManagerAuthorityResponse;
 import com.platform.rmodel.authority.StudentAuthorityResponse;
+import com.platform.rmodel.authority.saveManagerAuthorityRequest;
+import com.platform.rmodel.authority.saveStudentAuthorityRequest;
 
 @Service("authorityService")
 public class AuthorityServiceImpl implements AuthorityService {
@@ -161,7 +164,95 @@ public class AuthorityServiceImpl implements AuthorityService {
 		}
 		
 	}
-	
-	
-
+	public BasicResponse saveStudentAuthority(saveStudentAuthorityRequest request) {
+		// TODO Auto-generated method stub
+		Integer classification=request.getClassification();
+		Integer update=0;
+		
+		if(classification==1){
+			//说明是禁言论坛
+			try {
+				logger.debug("start to update forum from stu_limit db ");
+				update=stu_limitDAO.updateForum(request.getValue());
+			} catch (Exception e) {
+				// TODO: handle exception
+				logger.debug("stu_limitDAO error",e);
+				BasicResponse response=new BasicResponse();
+				response.setCode(ApiResultInfo.ResultCode.ServerError);
+				response.setMsg(ApiResultInfo.ResultMsg.ServerError);
+				return response;
+				
+			}
+			if(update==1){
+				BasicResponse response=new BasicResponse();
+				response.setCode(0);
+				response.setMsg("update the forum successfully!");
+				return response;
+				
+			}
+		}else if(classification==2){
+			//编辑个人信息  
+			try {
+				logger.debug("start to update edit_info from stu_limit db ");
+				update=stu_limitDAO.updateEdit_info(request.getValue());
+			} catch (Exception e) {
+				// TODO: handle exception
+				logger.debug("stu_limitDAO error",e);
+				BasicResponse response=new BasicResponse();
+				response.setCode(ApiResultInfo.ResultCode.ServerError);
+				response.setMsg(ApiResultInfo.ResultMsg.ServerError);
+				return response;
+			}
+			if(update==1){
+				BasicResponse response=new BasicResponse();
+				response.setCode(0);
+				response.setMsg("update the edit_info successfully!");
+				return response;
+				
+			}
+		}else{
+			//上传作品
+			try {
+				logger.debug("start to update upload from stu_limit db ");
+				update=stu_limitDAO.updateUpload(request.getValue());
+			} catch (Exception e) {
+				// TODO: handle exception
+				logger.debug("stu_limitDAO error",e);
+				BasicResponse response=new BasicResponse();
+				response.setCode(ApiResultInfo.ResultCode.ServerError);
+				response.setMsg(ApiResultInfo.ResultMsg.ServerError);
+				return response;
+			}
+			if(update==1){
+				BasicResponse response=new BasicResponse();
+				response.setCode(0);
+				response.setMsg("update the upload successfully!");
+				return response;
+			}	
+		}
+		return null;	
+	}
+	public BasicResponse saveManagerAuthority(saveManagerAuthorityRequest request) {
+		// TODO Auto-generated method stub
+		Integer insertNum=0;
+		try {
+			logger.debug("insert manage_scope object from manage_scope db");
+			insertNum=manage_scopeDAO.insertManageScope(request.getManagerId(), request.getGrade(), 1);
+		} catch (Exception e) {
+			// TODO: handle exception
+			logger.debug("manage_scopeDAO error",e);
+			BasicResponse response=new BasicResponse();
+			response.setCode(ApiResultInfo.ResultCode.ServerError);
+			response.setMsg(ApiResultInfo.ResultMsg.ServerError);
+			return response;
+		}
+		if(insertNum!=0){
+			logger.debug("insert manage_scope db successfully!");
+			BasicResponse response=new BasicResponse();
+			response.setCode(0);
+			response.setMsg("insert manage_scope db successfully!");
+			return response;
+		}
+		return null;
+	}
 }

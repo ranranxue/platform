@@ -2,8 +2,10 @@ package com.platform.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.SelectKey;
 
 public interface Manage_scopeDAO {
 	/**
@@ -23,6 +25,17 @@ public interface Manage_scopeDAO {
 	 */
 	@Select("select grade from manage_scope where manager_id=#{manager_id} order by grade")
 	public List<String> getManagerGrades(@Param("manager_id") String manager_id);
+	/**
+	 * 插入管理的数据并返回id
+	 * @param manager_id
+	 * @param grade
+	 * @param isManager
+	 * @return
+	 */
+	@Insert("insert into manage_scope(manager_id,grade,isManager) values(#{manager_id},#{grade},#{isManager})")
+	@SelectKey(statement = "SELECT LAST_INSERT_ID() ", keyProperty = "id", before = false, resultType = int.class)
+	public Integer insertManageScope(@Param("manager_id") String manager_id,@Param("grade") String grade,@Param("isManager") Integer isManager);
+	
 	
 	
 
