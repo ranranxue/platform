@@ -4,6 +4,7 @@ public class Manage_scope {
 	private Integer id;
 	private String manager_id;
 	private String grade;
+	private Integer isManager;
 	public Integer getId() {
 		return id;
 	}
@@ -22,6 +23,12 @@ public class Manage_scope {
 	}
 	public void setManager_id(String manager_id) {
 		this.manager_id = manager_id;
+	}
+	public Integer getIsManager() {
+		return isManager;
+	}
+	public void setIsManager(Integer isManager) {
+		this.isManager = isManager;
 	}
 	
 

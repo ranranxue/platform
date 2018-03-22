@@ -38,6 +38,7 @@ import com.platform.rmodel.user.PasswordUpdateRequest;
 import com.platform.rmodel.user.PersonInfoEditRequest;
 import com.platform.rmodel.user.PersonInfoEditResponse;
 import com.platform.rmodel.user.UserInfoRequest;
+import com.platform.rmodel.user.addManagerRequest;
 import com.platform.service.user.UserService;
 import com.platform.util.DataTypePaserUtil;
 import com.platform.util.RedisUtil;
@@ -303,8 +304,7 @@ public class UserController {
 			logger.error(ApiResultInfo.ResultMsg.RequiredParasError);
 			return ApiResultFactory.getLackParasError();
 		}
-		
-		
+
 		PersonInfoEditRequest request = new PersonInfoEditRequest();
 		request.setStuid(requestParams.get(paras[0]));
 		request.setNickName(requestParams.get(paras[1]));
@@ -387,7 +387,6 @@ public class UserController {
 			logger.error(ApiResultInfo.ResultMsg.RequiredParasError);
 			return ApiResultFactory.getLackParasError();
 		}
-		
 
 		PasswordUpdateRequest request = new PasswordUpdateRequest();
 		request.setStuid(requestParams.get(paras[0]));
@@ -628,12 +627,46 @@ public class UserController {
 		}
 		// 通过返回码的数值，判断服务结果是否为正确的结果
 		if (response.getCode() != 0) {
-	     	logger.error("there are errors in service");
+			logger.error("there are errors in service");
 			return new ApiResult(response.getCode(), response.getMsg());
 		}
 		return new ApiResult(response);
 	}
-	
-	
+
+	@RequestMapping("manager/add")
+	private @ResponseBody ApiResult addManager(HttpServletRequest requestHttp, HttpServletResponse responseHttp) {
+		responseHttp.setHeader("Access-Control-Allow-Origin", "*");
+		Map<String, String> requestParams = RequestUtil.getParameterMap(requestHttp);
+		String[] paras = { "stuid", "name", "homeLink" };
+		boolean flag = RequestUtil.validate(paras, requestParams);
+		if (flag == false) {
+			logger.error(ApiResultInfo.ResultMsg.RequiredParasError);
+			return ApiResultFactory.getLackParasError();
+		}
+		addManagerRequest request = new addManagerRequest();
+		request.setStuid(requestParams.get(paras[0]));
+		request.setName(requestParams.get(paras[1]));
+		request.setHomeLink(requestParams.get(paras[2]));
+		BasicResponse response = null;
+		try {
+			logger.debug("add manager using userService");
+			response = userService.addManager(request);
+		} catch (Exception e) {
+			// TODO: handle exception
+			logger.error(ApiResultInfo.ResultMsg.ServerError);
+			return ApiResultFactory.getServerError();
+		}
+		// 判断服务是否正常返回
+		if (response == null) {
+			logger.error(" addManager  response is null");
+			return ApiResultFactory.getServerError();
+		}
+		// 通过返回码的数值，判断服务结果是否为正确的结果
+		if (response.getCode() != 0) {
+			logger.error("there are errors in service");
+			return new ApiResult(response.getCode(), response.getMsg());
+		}
+		return new ApiResult(response);
+	}
 
 }

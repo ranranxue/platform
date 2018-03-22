@@ -15,7 +15,9 @@ import com.platform.data.ApiResultInfo;
 import com.platform.data.StaticData;
 import com.platform.model.BasicResponse;
 import com.platform.model.Login;
+import com.platform.model.Manage_scope;
 import com.platform.model.User;
+
 import com.platform.rmodel.user.AddDetailIntroRequest;
 import com.platform.rmodel.user.AddDetailIntroResponse;
 import com.platform.rmodel.user.AddUserRequest;
@@ -42,6 +44,7 @@ import com.platform.rmodel.user.PersonInfoEditResponse;
 import com.platform.rmodel.user.UserBasicInfo;
 import com.platform.rmodel.user.UserInfo;
 import com.platform.rmodel.user.UserInfoRequest;
+import com.platform.rmodel.user.addManagerRequest;
 import com.platform.rmodel.work.WorkInfo;
 import com.platform.util.MesDigest;
 import com.platform.util.RedisUtil;
@@ -226,12 +229,12 @@ public class UserServiceImpl implements UserService {
 			response.setMsg(ApiResultInfo.ResultMsg.ServerError);
 			return response;
 		}
-		String managerId="0";
-		if(request.getIs_manageId()==1){
-			//需要获取该用户的管理员的id
+		String managerId = "0";
+		if (request.getIs_manageId() == 1) {
+			// 需要获取该用户的管理员的id
 			try {
 				logger.debug("get the managerId using grade");
-				managerId=manage_scopeDAO.getManagerIdByGrade(user.getGrade());
+				managerId = manage_scopeDAO.getManagerIdByGrade(user.getGrade());
 			} catch (Exception e) {
 				// TODO: handle exception
 				logger.error("manage_scopeDAO service error", e);
@@ -240,18 +243,18 @@ public class UserServiceImpl implements UserService {
 				response.setMsg(ApiResultInfo.ResultMsg.ServerError);
 				return response;
 			}
-			if(managerId=="0"){
+			if (managerId == "0") {
 				logger.error("fail to get managerId");
 				HomePageResponse response = new HomePageResponse();
 				response.setCode(ApiResultInfo.ResultCode.ServerError);
 				response.setMsg(ApiResultInfo.ResultMsg.ServerError);
-				return response;	
+				return response;
 			}
 		}
-		List<WorkInfo> worksList=null;
+		List<WorkInfo> worksList = null;
 		try {
 			logger.debug("start to get my works from works db using stuid");
-			worksList=worksDAO.getMyAllWorks(request.getStuid());
+			worksList = worksDAO.getMyAllWorks(request.getStuid());
 		} catch (Exception e) {
 			// TODO: handle exception
 			logger.error("worksDAO service error", e);
@@ -260,7 +263,7 @@ public class UserServiceImpl implements UserService {
 			response.setMsg(ApiResultInfo.ResultMsg.ServerError);
 			return response;
 		}
-		if(worksList==null){
+		if (worksList == null) {
 			logger.debug(" fail to get my works");
 			HomePageResponse response = new HomePageResponse();
 			response.setCode(ApiResultInfo.ResultCode.ServerError);
@@ -632,10 +635,10 @@ public class UserServiceImpl implements UserService {
 			response.setMsg(ApiResultInfo.ResultMsg.ServerError);
 			return response;
 		}
-		String head_url="";
+		String head_url = "";
 		try {
-			logger.debug("get head_url from user db using stuid"+request.getStuid());
-			head_url=userDAO.getHead_urlByStuid(request.getStuid());
+			logger.debug("get head_url from user db using stuid" + request.getStuid());
+			head_url = userDAO.getHead_urlByStuid(request.getStuid());
 		} catch (Exception e) {
 			// TODO: handle exception
 			logger.error("userService error", e);
@@ -644,7 +647,7 @@ public class UserServiceImpl implements UserService {
 			response.setMsg(ApiResultInfo.ResultMsg.ServerError);
 			return response;
 		}
-		
+
 		logger.debug("update the user info successfully!");
 		PersonInfoEditResponse response = new PersonInfoEditResponse();
 		response.setCode(0);
@@ -655,7 +658,7 @@ public class UserServiceImpl implements UserService {
 		response.setSelf_introduction(request.getSelf_introduction());
 		response.setPhone(request.getPhone());
 		response.setEmail(request.getEmail());
-		response.setHead_url(StaticData.QiNiuFilePath+head_url);
+		response.setHead_url(StaticData.QiNiuFilePath + head_url);
 		return response;
 	}
 
@@ -817,30 +820,30 @@ public class UserServiceImpl implements UserService {
 
 	public LoginResponse GetPersonInfo(UserInfoRequest request) {
 		// TODO Auto-generated method stub
-		User user=null;
+		User user = null;
 		try {
-			logger.debug("start to get the person info from userdb using stuid"+request.getStuid());
-			user=userDAO.getUserInfo(request.getStuid());
+			logger.debug("start to get the person info from userdb using stuid" + request.getStuid());
+			user = userDAO.getUserInfo(request.getStuid());
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.error("userDAO error",e);
+			logger.error("userDAO error", e);
 			LoginResponse response = new LoginResponse();
 			response.setCode(ApiResultInfo.ResultCode.ServerError);
 			response.setMsg(ApiResultInfo.ResultMsg.ServerError);
 			return response;
 		}
-		if(user==null){
+		if (user == null) {
 			logger.debug("fail to get the LoginResponse ");
 			LoginResponse response = new LoginResponse();
 			response.setCode(ApiResultInfo.ResultCode.ServerError);
 			response.setMsg(ApiResultInfo.ResultMsg.ServerError);
 			return response;
-		}else{
+		} else {
 			LoginResponse response = new LoginResponse();
 			response.setLoginName(user.getStuid());
 			response.setNickname(user.getNickname());
 			response.setName(user.getName());
-			response.setHead_url(StaticData.QiNiuFilePath+user.getHead_url());
+			response.setHead_url(StaticData.QiNiuFilePath + user.getHead_url());
 			response.setGender(user.getGender());
 			response.setSelf_introduction(user.getSelf_introduction());
 			response.setPhone(user.getPhone());
@@ -848,5 +851,107 @@ public class UserServiceImpl implements UserService {
 			response.setIsManager(user.getIsManager());
 			return response;
 		}
+	}
+
+	public BasicResponse addManager(addManagerRequest request) {
+		// TODO Auto-generated method stub
+		// 依次需要插入的表 user login manage_scope
+		Integer checkNum = -1;
+		try {
+			logger.debug("check the stuid whether exists or not");
+			checkNum = userDAO.getStuNum(request.getStuid());
+		} catch (Exception e) {
+			// TODO: handle exception
+			logger.error("userService error", e);
+			AddUserResponse response = new AddUserResponse();
+			response.setCode(ApiResultInfo.ResultCode.ServerError);
+			response.setMsg(ApiResultInfo.ResultMsg.ServerError);
+			return response;
+		}
+		if (checkNum == -1) {
+			logger.debug(" fail to get the stu num by stuid");
+			AddUserResponse response = new AddUserResponse();
+			response.setCode(ApiResultInfo.ResultCode.ServerError);
+			response.setMsg(ApiResultInfo.ResultMsg.ServerError);
+			return response;
+		} else if (checkNum > 0) {
+			// 说明此学号已经存在
+			logger.debug(" the stuid is already exists !");
+			AddUserResponse response = new AddUserResponse();
+			response.setCode(ApiResultInfo.ResultCode.duplicateStuid);
+			response.setMsg(ApiResultInfo.ResultMsg.duplicateStuid);
+			return response;
+		} else {
+			Integer create_time = (int) TimeUtil.getCurrentTime(TimeData.TimeFormat.YMD);
+			Integer insertUser = 0;
+			try {
+				logger.debug("add manager to user db");
+				insertUser = userDAO.insertManager(request.getStuid(), request.getName(), 1, request.getHomeLink(),
+						create_time);
+			} catch (Exception e) {
+				// TODO: handle exception
+				logger.error("userDAO error", e);
+				BasicResponse response = new BasicResponse();
+				response.setCode(ApiResultInfo.ResultCode.ServerError);
+				response.setMsg(ApiResultInfo.ResultMsg.ServerError);
+				return response;
+			}
+			if (insertUser == 0) {
+				logger.debug("fail to insert the user in user db");
+				BasicResponse response = new BasicResponse();
+				response.setCode(ApiResultInfo.ResultCode.ServerError);
+				response.setMsg(ApiResultInfo.ResultMsg.ServerError);
+				return response;
+			} else {
+				// 插入login db
+				Login login = new Login();
+				login.setStuid(request.getStuid());
+				login.setPassword(MesDigest.SHA("123456"));
+				int loginNum = 0;
+				try {
+					logger.debug("insert the login info");
+					loginNum = loginDAO.insertLogin(login);
+				} catch (Exception e) {
+					// TODO: handle exception
+					logger.error("loginDAO error", e);
+					BasicResponse response = new BasicResponse();
+					response.setCode(ApiResultInfo.ResultCode.ServerError);
+					response.setMsg(ApiResultInfo.ResultMsg.ServerError);
+					return response;
+				   }
+				if(loginNum==0){
+					logger.debug("fail to insert the user in login db");
+					BasicResponse response = new BasicResponse();
+					response.setCode(ApiResultInfo.ResultCode.ServerError);
+					response.setMsg(ApiResultInfo.ResultMsg.ServerError);
+					return response;
+				}else{
+					//插入管理的权限
+					Manage_scope  manage_scope=new Manage_scope();
+					manage_scope.setManager_id(request.getStuid());
+					manage_scope.setIsManager(1);
+					manage_scope.setGrade("");
+					Integer id=0;
+					try {
+						logger.debug(" insert manage_scope db using manage_scope object");
+						id=manage_scopeDAO.insertManageScope(manage_scope);
+					} catch (Exception e) {
+						// TODO: handle exception
+						logger.error("manage_scopeDAO error", e);
+						BasicResponse response = new BasicResponse();
+						response.setCode(ApiResultInfo.ResultCode.ServerError);
+						response.setMsg(ApiResultInfo.ResultMsg.ServerError);
+						return response;
+					}
+					if(id!=0){
+						BasicResponse response = new BasicResponse();
+						response.setCode(0);
+						response.setMsg("add manager successfully!");
+						return response;
+					}
+				}
+		   }
+		}
+		return null;
 	}
 }

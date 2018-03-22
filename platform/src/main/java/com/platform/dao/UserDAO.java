@@ -207,6 +207,19 @@ public interface UserDAO {
 	 */
 	@Select("select DISTINCT grade from user where isManager=0 order by grade")
 	public List<String> getAllGrades();
+	/**
+	 * 插入一个普通管理员
+	 * @param stuid
+	 * @param name
+	 * @param isManager
+	 * @param virtual_homepage
+	 * @param create_time
+	 * @return
+	 */
+	@Insert("insert into user(stuid,name,isManager,virtual_homepage,create_time)values(#{stuid},#{name},#{isManager},#{virtual_homepage},#{create_time})")
+	public Integer insertManager(@Param("stuid") String stuid,@Param("name") String name,@Param("isManager") Integer isManager,@Param("virtual_homepage") String virtual_homepage,@Param("create_time") Integer create_time);
+	
+		
 	
 	
 	

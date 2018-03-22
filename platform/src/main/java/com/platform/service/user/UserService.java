@@ -26,6 +26,7 @@ import com.platform.rmodel.user.PasswordUpdateRequest;
 import com.platform.rmodel.user.PersonInfoEditRequest;
 import com.platform.rmodel.user.PersonInfoEditResponse;
 import com.platform.rmodel.user.UserInfoRequest;
+import com.platform.rmodel.user.addManagerRequest;
 
 public interface UserService {
 	/**
@@ -120,7 +121,12 @@ public interface UserService {
 	 * @return
 	 */
 	public LoginResponse  GetPersonInfo(UserInfoRequest request);
-	
+	/**
+	 * 增加管理员
+	 * @param request
+	 * @return
+	 */
+	public BasicResponse addManager(addManagerRequest request);
 	
 	
 	
