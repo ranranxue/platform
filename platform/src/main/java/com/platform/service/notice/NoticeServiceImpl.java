@@ -14,12 +14,12 @@ import com.platform.data.ApiResultInfo;
 import com.platform.data.StaticData;
 import com.platform.data.TimeData;
 import com.platform.model.Attachment;
+import com.platform.model.BasicResponse;
 import com.platform.model.Notice;
 import com.platform.rmodel.notice.AttachmentInfo;
 import com.platform.rmodel.notice.CreateNoticeRequest;
 import com.platform.rmodel.notice.CreateNoticeResponse;
 import com.platform.rmodel.notice.NoticeDeleteRequest;
-import com.platform.rmodel.notice.NoticeDeleteResponse;
 import com.platform.rmodel.notice.NoticeDetailRequest;
 import com.platform.rmodel.notice.NoticeDetailResponse;
 import com.platform.rmodel.notice.NoticeInfo;
@@ -184,33 +184,36 @@ public class NoticeServiceImpl implements NoticeService {
 		return response;
 	}
 
-	public NoticeDeleteResponse deleteNotice(NoticeDeleteRequest request) {
+	public BasicResponse deleteNotice(NoticeDeleteRequest request) {
 		// TODO Auto-generated method stub
 		// attention:不仅删除公告，公告的附件也需要删除
-		Integer num = 0;
+		
 		try {
-			logger.debug(" start to delete the notice from notice db using notice_id" + request.getNotice_id());
-			num = noticeDAO.deleteNotice(request.getNotice_id());
+			logger.debug(" start to delete the notice from notice db using notice_id" + request.getNoticeIdList());
+			noticeDAO.deleteMultiNotice(request.getNoticeIdList());
 		} catch (Exception e) {
 			// TODO: handle exception
-			logger.error(" noticeService error", e);
-			NoticeDeleteResponse response = new NoticeDeleteResponse();
+			logger.error(" noticeDAO error", e);
+			BasicResponse response = new BasicResponse();
 			response.setCode(ApiResultInfo.ResultCode.ServerError);
 			response.setMsg(ApiResultInfo.ResultMsg.ServerError);
 			return response;
 		}
-		if (num == 0) {
-			logger.error("fail to delete the notice");
-			NoticeDeleteResponse response = new NoticeDeleteResponse();
+		try {
+			logger.debug(" start to delete the notice  attachment from attachment  db using notice_id" + request.getNoticeIdList());
+			attachmentDAO.deleteMultiAttachment(request.getNoticeIdList());
+		} catch (Exception e) {
+			// TODO: handle exception
+			logger.error(" attachmentDAO error", e);
+			BasicResponse response = new BasicResponse();
 			response.setCode(ApiResultInfo.ResultCode.ServerError);
 			response.setMsg(ApiResultInfo.ResultMsg.ServerError);
 			return response;
 		}
 		logger.debug("delete the notice successfully!");
-		NoticeDeleteResponse response = new NoticeDeleteResponse();
+		BasicResponse response = new BasicResponse();
 		response.setCode(0);
 		response.setMsg("delete the notice successfully!");
-		response.setNotice_id(request.getNotice_id());
 		return response;
 	}
 

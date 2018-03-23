@@ -150,8 +150,7 @@ public interface UserDAO {
 	 * @param stuid
 	 * @return
 	 */
-	@Delete("delete from user where stuid=#{stuid}")
-	public Integer deleteUser(@Param("stuid") String stuid);
+	public void deleteByMultiUserId(@Param("list") List<String> list);
 	/**
 	 * 更新个人的详细信息
 	 * @param stuid

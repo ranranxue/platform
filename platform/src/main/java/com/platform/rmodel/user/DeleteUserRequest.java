@@ -1,15 +1,20 @@
 package com.platform.rmodel.user;
 
+import java.util.List;
+
 public class DeleteUserRequest {
-	private String stuid;
+	private List<String> userList;
 
-	public String getStuid() {
-		return stuid;
+	public List<String> getUserList() {
+		return userList;
 	}
 
-	public void setStuid(String stuid) {
-		this.stuid = stuid;
+	public void setUserList(List<String> userList) {
+		this.userList = userList;
 	}
+
+	
+
 	
 
 }

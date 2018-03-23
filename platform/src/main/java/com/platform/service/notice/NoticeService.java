@@ -1,9 +1,9 @@
 package com.platform.service.notice;
 
+import com.platform.model.BasicResponse;
 import com.platform.rmodel.notice.CreateNoticeRequest;
 import com.platform.rmodel.notice.CreateNoticeResponse;
 import com.platform.rmodel.notice.NoticeDeleteRequest;
-import com.platform.rmodel.notice.NoticeDeleteResponse;
 import com.platform.rmodel.notice.NoticeDetailRequest;
 import com.platform.rmodel.notice.NoticeDetailResponse;
 import com.platform.rmodel.notice.NoticeListResponse;
@@ -28,7 +28,10 @@ public interface NoticeService {
 	 * @param request
 	 * @return
 	 */
-	public NoticeDeleteResponse deleteNotice(NoticeDeleteRequest request);
+	/**public NoticeDeleteResponse deleteNotice(NoticeDeleteRequest request);
+	 * 
+	 */
+	public BasicResponse deleteNotice(NoticeDeleteRequest request);
 	/**
 	 * 创建公告
 	 * @param request

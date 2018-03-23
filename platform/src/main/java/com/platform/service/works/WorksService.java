@@ -1,5 +1,6 @@
 package com.platform.service.works;
 
+import com.platform.model.BasicResponse;
 import com.platform.rmodel.notice.IndexInfoResponse;
 
 import com.platform.rmodel.work.UploadWorksRequest;
@@ -20,7 +21,7 @@ public interface WorksService {
 	 * @param request
 	 * @return
 	 */
-	public WorksDeleteResponse deleteWorks(WorksDeleteRequest request);
+	public BasicResponse deleteWorks(WorksDeleteRequest request);
 	/**
 	 * 上传作品
 	 * @param request

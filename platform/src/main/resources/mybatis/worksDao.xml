@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mapper namespace="com.platform.dao.WorksDAO">
+   <delete id="deleteMultiWorks" parameterType="java.util.List">
+		delete from works where id in
+		<foreach collection="list" item="item" index="index" open="("
+			close=")" separator=",">
+			#{item, jdbcType=INTEGER}
+		</foreach>
+	</delete>
+
+</mapper>

@@ -84,7 +84,7 @@ public interface UserService {
 	 * @param request
 	 * @return
 	 */
-	public DeleteUserResponse deleteUser(DeleteUserRequest request);
+	public BasicResponse deleteUser(DeleteUserRequest request);
 	
 	/**
 	 * 添加用户的详细介绍

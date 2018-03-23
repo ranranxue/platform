@@ -8,4 +8,14 @@
 			#{item, jdbcType=VARCHAR}
 		</foreach>
 	</select>
+	   
+	
+	<delete id="deleteByMultiUserId" parameterType="java.util.List">
+		delete from user where stuid in
+		<foreach collection="list" item="item" index="index" open="("
+			close=")" separator=",">
+			#{item, jdbcType=STRING}
+		</foreach>
+	</delete>
+	
 </mapper>

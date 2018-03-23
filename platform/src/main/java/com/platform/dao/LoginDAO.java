@@ -1,5 +1,7 @@
 package com.platform.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
@@ -31,8 +33,8 @@ public interface LoginDAO {
 	 * @param stuid
 	 * @return
 	 */
-	@Delete("delete from login where stuid=#{stuid}")
-	public Integer deleteUser(@Param("stuid") String stuid);
+	
+	public void deleteMultiUser(@Param("list") List<String> list);
 	/**
 	 * 判断用户的密码是否正确
 	 * @param stuid

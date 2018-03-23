@@ -1,20 +1,24 @@
 package com.platform.controller;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.platform.data.ApiResult;
 import com.platform.data.ApiResultFactory;
 import com.platform.data.ApiResultInfo;
-
-
+import com.platform.model.BasicResponse;
 import com.platform.rmodel.work.UploadWorksRequest;
 import com.platform.rmodel.work.UploadWorksResponse;
 import com.platform.rmodel.work.WorksDeleteRequest;
@@ -40,17 +44,18 @@ public class WorksController {
 	}
 
 	@RequestMapping("works/delete")
-	private @ResponseBody ApiResult deleteWorks(HttpServletRequest requestHttp) {
-		Map<String, String> requestParams = RequestUtil.getParameterMap(requestHttp);
-		String[] paras = { "works_id" };
-		boolean flag = RequestUtil.validate(paras, requestParams);
-		if (flag == false) {
-			logger.error(ApiResultInfo.ResultMsg.RequiredParasError);
-			return ApiResultFactory.getLackParasError();
-		}
+	private @ResponseBody ApiResult uploadAsy(HttpServletRequest requestHttp, HttpServletResponse responseHttp,
+			@RequestParam(value = "deleteList[]", required = false) List<String> worksIdList) throws IOException {
+		
+		
 		WorksDeleteRequest request = new WorksDeleteRequest();
-		request.setWorks_id(DataTypePaserUtil.StringToInteger(requestParams.get(paras[0])));
-		WorksDeleteResponse response = null;
+		Integer worksIdLength=worksIdList.size();
+		List<Integer> idList=new ArrayList<Integer>();
+		for(int i=0;i<worksIdLength;i++){
+			idList.add(DataTypePaserUtil.StringToInteger(worksIdList.get(i)));
+		}
+		
+		BasicResponse response = null;
 		try {
 			logger.debug(" delete the works using worksService");
 			response = worksService.deleteWorks(request);

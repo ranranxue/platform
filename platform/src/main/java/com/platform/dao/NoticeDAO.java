@@ -41,8 +41,8 @@ public interface NoticeDAO {
 	 * @param notice_id
 	 * @return
 	 */
-	@Delete("delete from notice where id=#{notice_id}")
-	public Integer deleteNotice(@Param("notice_id") Integer notice_id);
+	//@Delete("delete from notice where id=#{notice_id}")
+	public void deleteMultiNotice(@Param("list") List<Integer> list);
 	/**
 	 * 插入一条公告并自动注入id
 	 * @param notice

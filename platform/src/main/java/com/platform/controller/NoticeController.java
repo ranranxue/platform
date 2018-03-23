@@ -1,5 +1,8 @@
 package com.platform.controller;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,15 +12,16 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.platform.data.ApiResult;
 import com.platform.data.ApiResultFactory;
 import com.platform.data.ApiResultInfo;
+import com.platform.model.BasicResponse;
 import com.platform.rmodel.notice.CreateNoticeRequest;
 import com.platform.rmodel.notice.CreateNoticeResponse;
 import com.platform.rmodel.notice.NoticeDeleteRequest;
-import com.platform.rmodel.notice.NoticeDeleteResponse;
 import com.platform.rmodel.notice.NoticeDetailRequest;
 import com.platform.rmodel.notice.NoticeDetailResponse;
 import com.platform.rmodel.notice.NoticeListResponse;
@@ -102,18 +106,18 @@ public class NoticeController {
 
 	}
 
-	@RequestMapping("notice/delete")
-	private @ResponseBody ApiResult deleteNotice(HttpServletRequest requestHttp) {
-		Map<String, String> requestParams = RequestUtil.getParameterMap(requestHttp);
-		String[] paras = { "notice_id" };
-		boolean flag = RequestUtil.validate(paras, requestParams);
-		if (flag == false) {
-			logger.error(ApiResultInfo.ResultMsg.RequiredParasError);
-			return ApiResultFactory.getLackParasError();
-		}
+	@RequestMapping("users/delete")
+	private @ResponseBody ApiResult uploadAsy(HttpServletRequest requestHttp, HttpServletResponse responseHttp,
+			@RequestParam(value = "deleteList[]", required = false) List<String> noticeIdList) throws IOException {
+		
 		NoticeDeleteRequest request = new NoticeDeleteRequest();
-		request.setNotice_id(DataTypePaserUtil.StringToInteger(requestParams.get(paras[0])));
-		NoticeDeleteResponse response = null;
+		Integer noticeIdListLength=noticeIdList.size();
+		List<Integer> idList=new ArrayList();
+		for(int i=0;i<noticeIdListLength;i++){
+			idList.add(DataTypePaserUtil.StringToInteger(noticeIdList.get(i)));
+		}
+		request.setNoticeIdList(idList);
+		BasicResponse response = null;
 		try {
 			logger.debug(" start to delete notice  using noticeService");
 			response = noticeService.deleteNotice(request);

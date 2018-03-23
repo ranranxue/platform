@@ -1,15 +1,18 @@
 package com.platform.rmodel.notice;
 
+import java.util.List;
+
 public class NoticeDeleteRequest {
-	private Integer notice_id;
+	private List<Integer> noticeIdList;
 
-	public Integer getNotice_id() {
-		return notice_id;
+	public List<Integer> getNoticeIdList() {
+		return noticeIdList;
 	}
 
-	public void setNotice_id(Integer notice_id) {
-		this.notice_id = notice_id;
+	public void setNoticeIdList(List<Integer> noticeIdList) {
+		this.noticeIdList = noticeIdList;
 	}
+
 	
 
 }

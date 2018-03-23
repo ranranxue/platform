@@ -13,6 +13,7 @@ import com.platform.dao.WorksDAO;
 import com.platform.data.ApiResultInfo;
 import com.platform.data.StaticData;
 import com.platform.data.TimeData;
+import com.platform.model.BasicResponse;
 import com.platform.model.Works;
 import com.platform.rmodel.notice.IndexInfoResponse;
 import com.platform.rmodel.notice.NoticeInfo;
@@ -190,12 +191,12 @@ public class WorksServiceImpl implements WorksService {
 		return response;
 	}
 
-	public WorksDeleteResponse deleteWorks(WorksDeleteRequest request) {
+	public BasicResponse deleteWorks(WorksDeleteRequest request) {
 		// TODO Auto-generated method stub
-		Integer deleteNum = 0;
+
 		try {
-			logger.debug(" delete the works from works db using works_id" + request.getWorks_id());
-			deleteNum = worksDAO.deleteWorks(request.getWorks_id());
+			logger.debug(" delete the works from works db using works_id" + request.getWorksIdList());
+			worksDAO.deleteMultiWorks(request.getWorksIdList());
 		} catch (Exception e) {
 			// TODO: handle exception
 			logger.error(" worksService error ", e);
@@ -204,19 +205,11 @@ public class WorksServiceImpl implements WorksService {
 			response.setMsg(ApiResultInfo.ResultMsg.ServerError);
 			return response;
 		}
-		if (deleteNum == 0) {
-			logger.debug(" fail to delete the works");
-			WorksDeleteResponse response = new WorksDeleteResponse();
-			response.setCode(ApiResultInfo.ResultCode.ServerError);
-			response.setMsg(ApiResultInfo.ResultMsg.ServerError);
-			return response;
-		} else {
-			WorksDeleteResponse response = new WorksDeleteResponse();
-			response.setCode(0);
-			response.setMsg("delete the works successfully!");
-			response.setWorks_id(request.getWorks_id());
-			return response;
-		}
+
+		BasicResponse response = new BasicResponse();
+		response.setCode(0);
+		response.setMsg("delete the works successfully!");
+		return response;
 	}
 
 	public UploadWorksResponse uploadWorks(UploadWorksRequest request) {

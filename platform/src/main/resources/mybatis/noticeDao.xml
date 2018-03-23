@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mapper namespace="com.platform.dao.NoticeDAO">
+   <delete id="deleteMultiNotice" parameterType="java.util.List">
+		delete from notice where id in
+		<foreach collection="list" item="item" index="index" open="("
+			close=")" separator=",">
+			#{item, jdbcType=INTEGER}
+		</foreach>
+	</delete>
+	
+
+
+</mapper>

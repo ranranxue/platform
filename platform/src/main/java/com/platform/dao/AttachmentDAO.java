@@ -15,6 +15,11 @@ public interface AttachmentDAO {
 	 */
 	@Select("select attachment_name,attachment_url from attachment where notice_id=#{notice_id}")
 	public List<Attachment> getAttachmentInfo(@Param("notice_id") Integer notice_id);
+	/**
+	 * 批量删除公告的附件
+	 * @param list
+	 */
+	public void deleteMultiAttachment(@Param("list") List<Integer> list);
 	
 	
 	

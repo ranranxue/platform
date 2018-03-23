@@ -524,13 +524,13 @@ public class UserServiceImpl implements UserService {
 		return response;
 	}
 
-	public DeleteUserResponse deleteUser(DeleteUserRequest request) {
+	public BasicResponse deleteUser(DeleteUserRequest request) {
 		// TODO Auto-generated method stub
 		// 涉及到user 、login 、authority db
-		Integer userNum = 0;
+		//只是删除学生设计到的表有 user login 
 		try {
-			logger.debug("delete the user from user db using stuid" + request.getStuid());
-			userNum = userDAO.deleteUser(request.getStuid());
+			logger.debug("delete the user from user db using stuid" + request.getUserList());
+			userDAO.deleteByMultiUserId(request.getUserList());
 		} catch (Exception e) {
 			// TODO: handle exception
 			logger.error("userService error", e);
@@ -539,17 +539,11 @@ public class UserServiceImpl implements UserService {
 			response.setMsg(ApiResultInfo.ResultMsg.ServerError);
 			return response;
 		}
-		if (userNum == 0) {
-			logger.debug("fail to delete user from user db");
-			DeleteUserResponse response = new DeleteUserResponse();
-			response.setCode(ApiResultInfo.ResultCode.ServerError);
-			response.setMsg(ApiResultInfo.ResultMsg.ServerError);
-			return response;
-		}
-		Integer loginNum = 0;
+		
+		
 		try {
-			logger.debug("delete the user from login db using stuid" + request.getStuid());
-			loginNum = loginDAO.deleteUser(request.getStuid());
+			logger.debug("delete the user from login db using stuid" + request.getUserList());
+			loginDAO.deleteMultiUser(request.getUserList());
 		} catch (Exception e) {
 			// TODO: handle exception
 			logger.error("userService error", e);
@@ -558,18 +552,9 @@ public class UserServiceImpl implements UserService {
 			response.setMsg(ApiResultInfo.ResultMsg.ServerError);
 			return response;
 		}
-		if (loginNum == 0) {
-			logger.debug("fail to delete user from login db");
-			DeleteUserResponse response = new DeleteUserResponse();
-			response.setCode(ApiResultInfo.ResultCode.ServerError);
-			response.setMsg(ApiResultInfo.ResultMsg.ServerError);
-			return response;
-		}
-
-		DeleteUserResponse response = new DeleteUserResponse();
+		BasicResponse response = new BasicResponse();
 		response.setCode(0);
 		response.setMsg("delete user successfully!");
-		response.setStuid(request.getStuid());
 		return response;
 	}
 

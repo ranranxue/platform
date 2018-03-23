@@ -39,8 +39,7 @@ public interface WorksDAO {
 	 * @param work_id
 	 * @return
 	 */
-	@Delete("delete from works where id=#{work_id}")
-	public Integer deleteWorks(@Param("work_id") Integer work_id);
+	public void deleteMultiWorks(@Param("list") List<Integer> list);
 	
 	
 	

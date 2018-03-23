@@ -1,15 +1,19 @@
 package com.platform.rmodel.work;
 
+import java.util.List;
+
 public class WorksDeleteRequest {
-	private Integer works_id;
+	private List<Integer> worksIdList;
 
-	public Integer getWorks_id() {
-		return works_id;
+	public List<Integer> getWorksIdList() {
+		return worksIdList;
 	}
 
-	public void setWorks_id(Integer works_id) {
-		this.works_id = works_id;
+	public void setWorksIdList(List<Integer> worksIdList) {
+		this.worksIdList = worksIdList;
 	}
+
+	
 	
 
 }

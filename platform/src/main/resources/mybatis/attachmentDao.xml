@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mapper namespace="com.platform.dao.AttachmentDAO">
+   <delete id="deleteMultiAttachment" parameterType="java.util.List">
+		delete from attachment where notice_id in
+		<foreach collection="list" item="item" index="index" open="("
+			close=")" separator=",">
+			#{item, jdbcType=INTEGER}
+		</foreach>
+	</delete>
+
+</mapper>

@@ -51,7 +51,7 @@ public interface Manage_scopeDAO {
 	 * @param manager_id
 	 * @return
 	 */
-	@Update("update manage_scope set grade==#{grade} where manager_id=#{manager_id}")
+	@Update("update manage_scope set grade=#{grade} where manager_id=#{manager_id}")
 	public Integer updateManageGrade(@Param("grade") String grade,@Param("manager_id") String manager_id);
 	
 

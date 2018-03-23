@@ -1,5 +1,7 @@
 package com.platform.controller;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -8,7 +10,10 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.platform.data.ApiResult;
 import com.platform.data.ApiResultFactory;
 import com.platform.data.ApiResultInfo;
@@ -491,30 +496,26 @@ public class UserController {
 
 	}
 
-	@RequestMapping("delete/user")
-	private @ResponseBody ApiResult deleteUser(HttpServletRequest requestHttp, HttpServletResponse responseHttp) {
+	@RequestMapping("users/delete")
+	private @ResponseBody ApiResult uploadAsy(HttpServletRequest requestHttp, HttpServletResponse responseHttp,
+			@RequestParam(value = "deleteList[]", required = false) List<String> userList) throws IOException {
 		responseHttp.setHeader("Access-Control-Allow-Origin", "*");
-		Map<String, String> requestParams = RequestUtil.getParameterMap(requestHttp);
-		String[] paras = { "list" };
-		boolean flag = RequestUtil.validate(paras, requestParams);
-		if (flag == false) {
-			logger.error(ApiResultInfo.ResultMsg.RequiredParasError);
-			return ApiResultFactory.getLackParasError();
-		}
 		DeleteUserRequest request = new DeleteUserRequest();
-		request.setStuid(requestParams.get(paras[0]));
-		DeleteUserResponse response = null;
+		logger.debug(userList);
+		request.setUserList(userList);
+		BasicResponse response = null;
 		try {
-			logger.debug(" start to delete user using userService");
+			logger.debug("start to delete users using userService");
 			response = userService.deleteUser(request);
 		} catch (Exception e) {
 			// TODO: handle exception
 			logger.error(ApiResultInfo.ResultMsg.ServerError);
 			return ApiResultFactory.getServerError();
 		}
+
 		if (response == null) {
 			// 判断服务是否正常返回
-			logger.error("delete user Response is null and fail to delete user  ");
+			logger.error(" Response is null and fail to delete users");
 			return ApiResultFactory.getServerError();
 		}
 		// 通过返回码的数值，判断服务结果是否为正确的结果
@@ -523,6 +524,7 @@ public class UserController {
 			return new ApiResult(response.getCode(), response.getMsg());
 		}
 		return new ApiResult(response);
+
 	}
 
 	@RequestMapping("detail_submit")
