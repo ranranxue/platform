@@ -49,11 +49,13 @@ public class WorksController {
 		
 		WorksDeleteRequest request = new WorksDeleteRequest();
 		Integer worksIdLength=worksIdList.size();
+		logger.debug(worksIdLength);
 		List<Integer> idList=new ArrayList<Integer>();
 		for(int i=0;i<worksIdLength;i++){
 			idList.add(DataTypePaserUtil.StringToInteger(worksIdList.get(i)));
 		}
 		
+		request.setWorksIdList(idList);
 		BasicResponse response = null;
 		try {
 			logger.debug(" delete the works using worksService");
