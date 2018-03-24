@@ -14,6 +14,7 @@
        
        
 	<!-- 用于使用@ResponseBody后返回中文避免乱码 -->
+	
 	<mvc:annotation-driven>
        <mvc:message-converters>
            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
