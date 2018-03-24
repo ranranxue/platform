@@ -22,7 +22,6 @@ import com.platform.model.BasicResponse;
 import com.platform.rmodel.work.UploadWorksRequest;
 import com.platform.rmodel.work.UploadWorksResponse;
 import com.platform.rmodel.work.WorksDeleteRequest;
-import com.platform.rmodel.work.WorksDeleteResponse;
 import com.platform.rmodel.work.WorksListResponse;
 import com.platform.service.works.WorksService;
 import com.platform.util.DataTypePaserUtil;

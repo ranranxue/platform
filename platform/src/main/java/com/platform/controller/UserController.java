@@ -12,7 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
+
 
 import com.platform.data.ApiResult;
 import com.platform.data.ApiResultFactory;
@@ -26,7 +26,7 @@ import com.platform.rmodel.user.AllUserResponse;
 import com.platform.rmodel.user.ClassInfoRequest;
 import com.platform.rmodel.user.ClassInfoResponse;
 import com.platform.rmodel.user.DeleteUserRequest;
-import com.platform.rmodel.user.DeleteUserResponse;
+
 
 import com.platform.rmodel.user.ExitRequest;
 import com.platform.rmodel.user.GetUsersRequest;

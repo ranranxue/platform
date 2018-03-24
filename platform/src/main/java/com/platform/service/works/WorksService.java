@@ -6,7 +6,7 @@ import com.platform.rmodel.notice.IndexInfoResponse;
 import com.platform.rmodel.work.UploadWorksRequest;
 import com.platform.rmodel.work.UploadWorksResponse;
 import com.platform.rmodel.work.WorksDeleteRequest;
-import com.platform.rmodel.work.WorksDeleteResponse;
+
 import com.platform.rmodel.work.WorksListResponse;
 
 

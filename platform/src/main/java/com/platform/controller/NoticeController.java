@@ -112,7 +112,7 @@ public class NoticeController {
 		
 		NoticeDeleteRequest request = new NoticeDeleteRequest();
 		Integer noticeIdListLength=noticeIdList.size();
-		List<Integer> idList=new ArrayList();
+		List<Integer> idList=new ArrayList<Integer>();
 		for(int i=0;i<noticeIdListLength;i++){
 			idList.add(DataTypePaserUtil.StringToInteger(noticeIdList.get(i)));
 		}

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <mapper namespace="com.platform.dao.AttachmentDAO">
    <delete id="deleteMultiAttachment" parameterType="java.util.List">
 		delete from attachment where notice_id in
