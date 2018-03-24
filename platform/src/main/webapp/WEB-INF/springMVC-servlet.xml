@@ -11,10 +11,7 @@
        http://www.springframework.org/schema/tx/spring-tx.xsd
        http://www.springframework.org/schema/mvc
        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
-       
-       
 	<!-- 用于使用@ResponseBody后返回中文避免乱码 -->
-	
 	<mvc:annotation-driven>
        <mvc:message-converters>
            <bean class="org.springframework.http.converter.StringHttpMessageConverter">

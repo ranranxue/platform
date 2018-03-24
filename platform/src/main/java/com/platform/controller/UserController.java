@@ -497,7 +497,7 @@ public class UserController {
 	}
 
 	@RequestMapping("users/delete")
-	private @ResponseBody ApiResult uploadAsy(HttpServletRequest requestHttp, HttpServletResponse responseHttp,
+	private @ResponseBody ApiResult deleteUsers(HttpServletRequest requestHttp, HttpServletResponse responseHttp,
 			@RequestParam(value = "deleteList[]", required = false) List<String> userList) throws IOException {
 		responseHttp.setHeader("Access-Control-Allow-Origin", "*");
 		DeleteUserRequest request = new DeleteUserRequest();

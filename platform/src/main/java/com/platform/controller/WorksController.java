@@ -43,7 +43,7 @@ public class WorksController {
 	}
 
 	@RequestMapping("works/delete")
-	private @ResponseBody ApiResult uploadAsy(HttpServletRequest requestHttp, HttpServletResponse responseHttp,
+	private @ResponseBody ApiResult deleteWorks(HttpServletRequest requestHttp, HttpServletResponse responseHttp,
 			@RequestParam(value = "deleteList[]", required = false) List<String> worksIdList) throws IOException {
 		
 		

@@ -106,8 +106,8 @@ public class NoticeController {
 
 	}
 
-	@RequestMapping("users/delete")
-	private @ResponseBody ApiResult uploadAsy(HttpServletRequest requestHttp, HttpServletResponse responseHttp,
+	@RequestMapping("notices/delete")
+	private @ResponseBody ApiResult deleteNotices(HttpServletRequest requestHttp, HttpServletResponse responseHttp,
 			@RequestParam(value = "deleteList[]", required = false) List<String> noticeIdList) throws IOException {
 		
 		NoticeDeleteRequest request = new NoticeDeleteRequest();
