@@ -5,6 +5,8 @@ public class AddUserRequest {
 	private String name;
 	private String grade;
 	private String classInfo;
+	private String homeLink;
+	
 	
 	public String getGrade() {
 		return grade;
@@ -29,6 +31,12 @@ public class AddUserRequest {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public String getHomeLink() {
+		return homeLink;
+	}
+	public void setHomeLink(String homeLink) {
+		this.homeLink = homeLink;
 	}
 	
 

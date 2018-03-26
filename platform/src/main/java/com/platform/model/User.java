@@ -19,6 +19,8 @@ public class User {
 	private String class_info;
 	private String self_introduction;
 	private String detail_introduction;
+	private String virtual_homepage;
+	
 	private Integer create_time;
 
 	public String getGrade() {
@@ -98,6 +100,12 @@ public class User {
 	}
 	public void setDetail_introduction(String detail_introduction) {
 		this.detail_introduction = detail_introduction;
+	}
+	public String getVirtual_homepage() {
+		return virtual_homepage;
+	}
+	public void setVirtual_homepage(String virtual_homepage) {
+		this.virtual_homepage = virtual_homepage;
 	}
 
 	

@@ -459,7 +459,7 @@ public class UserController {
 	private @ResponseBody ApiResult addUser(HttpServletRequest requestHttp, HttpServletResponse responseHttp) {
 		responseHttp.setHeader("Access-Control-Allow-Origin", "*");
 		Map<String, String> requestParams = RequestUtil.getParameterMap(requestHttp);
-		String[] paras = { "stuid", "name", "grade", "classInfo" };
+		String[] paras = { "stuid", "name", "grade", "classInfo","homeLink"};
 		boolean flag = RequestUtil.validate(paras, requestParams);
 		if (flag == false) {
 			logger.error(ApiResultInfo.ResultMsg.RequiredParasError);
@@ -470,6 +470,7 @@ public class UserController {
 		request.setName(requestParams.get(paras[1]));
 		request.setGrade(requestParams.get(paras[2]));
 		request.setClassInfo(requestParams.get(paras[3]));
+		request.setHomeLink(requestParams.get(paras[4]));
 		AddUserResponse response = null;
 		try {
 			logger.debug(" start to add user using user Service");

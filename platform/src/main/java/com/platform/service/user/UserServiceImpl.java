@@ -468,6 +468,7 @@ public class UserServiceImpl implements UserService {
 			user.setIsManager(0);
 			user.setGrade(request.getGrade());
 			user.setClass_info(request.getClassInfo());
+			user.setVirtual_homepage(request.getHomeLink());
 			user.setCreate_time((int) TimeUtil.getCurrentTime(TimeData.TimeFormat.YMD));
 
 			try {

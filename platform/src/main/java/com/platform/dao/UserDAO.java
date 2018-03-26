@@ -141,7 +141,7 @@ public interface UserDAO {
 	 * @param user
 	 * @return
 	 */
-	@Insert("insert into user(stuid,name,nickname,isManager,grade,class_info,create_time) values(#{stuid},#{name},#{nickname},#{isManager},#{grade},#{class_info},#{create_time});")
+	@Insert("insert into user(stuid,name,nickname,isManager,grade,class_info,virtual_homepage,create_time) values(#{stuid},#{name},#{nickname},#{isManager},#{grade},#{class_info},#{virtual_homepage},#{create_time});")
 	@SelectKey(statement = "SELECT LAST_INSERT_ID() ", keyProperty = "id", before = false, resultType = int.class)
 	public Integer insertUser(User user);
 	/**
