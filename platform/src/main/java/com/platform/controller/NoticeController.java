@@ -167,7 +167,7 @@ public class NoticeController {
 		request.setContent(requestParams.get("noticeContent"));
 		List<String> fileNewNameList = new ArrayList<String>();
 		List<AttachmentInfo> attachmentList = new ArrayList<AttachmentInfo>();
-		if (!files.isEmpty()) {
+		if (!(files.isEmpty())) {
 			for (int i = 0; i < files.size(); i++) {
 				AttachmentInfo attachment = new AttachmentInfo();
 				String orgFileName = files.get(i).getOriginalFilename();

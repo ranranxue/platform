@@ -249,7 +249,7 @@ public class NoticeServiceImpl implements NoticeService {
 				Attachment attachment=new Attachment();
 				attachment.setAttachment_name(attachmentList.get(i).getAttachment_name());
 				attachment.setAttachment_url(attachmentList.get(i).getAttachment_url());
-				attachment.setNotice_id(noticeId);
+				attachment.setNotice_id(notice.getId());
 				Integer attchmentId=0;
 				try {
 					logger.debug("start insert attachment db using attachment");

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
+import org.springframework.web.multipart.MultipartFile;
 
 import com.platform.data.ApiResult;
 import com.platform.data.ApiResultFactory;
@@ -668,5 +668,12 @@ public class UserController {
 		}
 		return new ApiResult(response);
 	}
+	@RequestMapping("addUsers")
+	private @ResponseBody ApiResult addMultiUser(HttpServletRequest requestHttp, HttpServletResponse responseHttp,
+			@RequestParam(value = "excel", required = false) MultipartFile excel) throws IOException {
+				
+		return null;
+	}
+	
 
 }
