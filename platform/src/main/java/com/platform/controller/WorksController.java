@@ -106,10 +106,10 @@ public class WorksController {
 
 	}
 
-	@RequestMapping("uploadworks")
+	@RequestMapping("works/upload")
 	private @ResponseBody ApiResult uploadWorks(HttpServletRequest requestHttp) {
 		Map<String, String> requestParams = RequestUtil.getParameterMap(requestHttp);
-		String[] paras = { "ticket", "title", "description", "label", "format", "works_url" };
+		String[] paras = { "ticket", "title","works_url" };
 		boolean flag = RequestUtil.validate(paras, requestParams);
 		if (flag == false) {
 			logger.error(ApiResultInfo.ResultMsg.RequiredParasError);
@@ -119,10 +119,7 @@ public class WorksController {
 		UploadWorksRequest request = new UploadWorksRequest();
 		request.setStuid(stuid);
 		request.setTitle(requestParams.get(paras[1]));
-		request.setDescription(requestParams.get(paras[2]));
-		request.setLabel(requestParams.get(paras[3]));
-		request.setFormat(DataTypePaserUtil.StringToInteger(requestParams.get(paras[4])));
-		request.setWorks_url(requestParams.get(paras[5]));
+		request.setWorks_url(requestParams.get(paras[2]));
 
 		UploadWorksResponse response = null;
 		try {

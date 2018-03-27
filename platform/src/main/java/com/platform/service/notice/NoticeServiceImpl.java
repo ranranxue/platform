@@ -219,16 +219,15 @@ public class NoticeServiceImpl implements NoticeService {
 
 	public CreateNoticeResponse createNotice(CreateNoticeRequest request) {
 		// TODO Auto-generated method stub
-		Integer num = 0;
+		Integer noticeId = 0;
 		Notice notice = new Notice();
 		notice.setTitle(request.getTitle());
 		notice.setContent(request.getContent());
-		notice.setPicture_url(request.getPicture_url());
 		notice.setPublisher(request.getPublisher());
 		notice.setCreate_time((int) TimeUtil.getCurrentTime(TimeData.TimeFormat.YMD));
 		try {
 			logger.debug(" create the notice in notice db ");
-			num = noticeDAO.insertNotice(notice);
+			noticeId = noticeDAO.insertNotice(notice);
 		} catch (Exception e) {
 			// TODO: handle exception
 			logger.error("noticeService error", e);
@@ -237,18 +236,45 @@ public class NoticeServiceImpl implements NoticeService {
 			response.setMsg(ApiResultInfo.ResultMsg.ServerError);
 			return response;
 		}
-		if (num == 0) {
+		if (noticeId == 0) {
 			logger.debug(" fail to insert the notice ");
 			CreateNoticeResponse response = new CreateNoticeResponse();
 			response.setCode(ApiResultInfo.ResultCode.ServerError);
 			response.setMsg(ApiResultInfo.ResultMsg.ServerError);
 			return response;
 		} else {
+			//插入附件
+			List<AttachmentInfo> attachmentList=request.getAttachmentList();
+			for(int i=0;i<attachmentList.size();i++){
+				Attachment attachment=new Attachment();
+				attachment.setAttachment_name(attachmentList.get(i).getAttachment_name());
+				attachment.setAttachment_url(attachmentList.get(i).getAttachment_url());
+				attachment.setNotice_id(noticeId);
+				Integer attchmentId=0;
+				try {
+					logger.debug("start insert attachment db using attachment");
+					attchmentId=attachmentDAO.insertAttachment(attachment);
+				} catch (Exception e) {
+					// TODO: handle exception
+					logger.error("attachmentDAO error", e);
+					CreateNoticeResponse response = new CreateNoticeResponse();
+					response.setCode(ApiResultInfo.ResultCode.ServerError);
+					response.setMsg(ApiResultInfo.ResultMsg.ServerError);
+					return response;
+				}
+				if(attchmentId==0){
+					logger.debug(" fail to insert the attachment ");
+					CreateNoticeResponse response = new CreateNoticeResponse();
+					response.setCode(ApiResultInfo.ResultCode.ServerError);
+					response.setMsg(ApiResultInfo.ResultMsg.ServerError);
+					return response;	
+				}	
+			}
 			CreateNoticeResponse response = new CreateNoticeResponse();
 			response.setCode(0);
 			response.setMsg("insert notice successfully!");
 			response.setNotice_id(notice.getId());
-			return response;
+			return response;	
 		}
 	}
 

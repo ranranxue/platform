@@ -47,7 +47,7 @@ public interface NoticeDAO {
 	 * @param notice
 	 * @return
 	 */
-	@Insert("insert into notice(title,content,picture_url,attachment_name,attachment_url,publisher,create_time) values(#{title},#{content},#{picture_url},#{attachment_name},#{attachment_url},#{publisher},#{publisher});")
+	@Insert("insert into notice(title,content,publisher,create_time) values(#{title},#{content},#{picture_url},#{publisher},#{publisher});")
 	@SelectKey(statement = "SELECT LAST_INSERT_ID() ", keyProperty = "id", before = false, resultType = int.class)
 	public Integer insertNotice(Notice notice);
 	

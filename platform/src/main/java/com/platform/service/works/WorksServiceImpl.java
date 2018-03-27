@@ -216,7 +216,6 @@ public class WorksServiceImpl implements WorksService {
 		// TODO Auto-generated method stub
 		Works works = new Works();
 		works.setTitle(request.getTitle());
-		works.setDescription(request.getDescription());
 
 		works.setAuthor_id(request.getStuid());
 		works.setWorks_url(request.getWorks_url());
