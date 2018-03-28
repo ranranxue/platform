@@ -1,6 +1,7 @@
 package com.platform.controller;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
@@ -27,7 +28,6 @@ import com.platform.rmodel.user.ClassInfoRequest;
 import com.platform.rmodel.user.ClassInfoResponse;
 import com.platform.rmodel.user.DeleteUserRequest;
 
-
 import com.platform.rmodel.user.ExitRequest;
 import com.platform.rmodel.user.GetUsersRequest;
 import com.platform.rmodel.user.GetUsersResponse;
@@ -35,6 +35,8 @@ import com.platform.rmodel.user.GradeInfoResponse;
 import com.platform.rmodel.user.Head_urlUpdateRequest;
 import com.platform.rmodel.user.Head_urlUpdateResponse;
 import com.platform.rmodel.user.HomePageResponse;
+import com.platform.rmodel.user.InsertMultiUserRequest;
+
 import com.platform.rmodel.user.JudgeIsLoginRequest;
 import com.platform.rmodel.user.JudgeIsLoginResponse;
 import com.platform.rmodel.user.LoginRequest;
@@ -46,6 +48,7 @@ import com.platform.rmodel.user.UserInfoRequest;
 import com.platform.rmodel.user.addManagerRequest;
 import com.platform.service.user.UserService;
 import com.platform.util.DataTypePaserUtil;
+import com.platform.util.ImportExcelUtil;
 import com.platform.util.RedisUtil;
 import com.platform.util.RequestUtil;
 
@@ -459,7 +462,7 @@ public class UserController {
 	private @ResponseBody ApiResult addUser(HttpServletRequest requestHttp, HttpServletResponse responseHttp) {
 		responseHttp.setHeader("Access-Control-Allow-Origin", "*");
 		Map<String, String> requestParams = RequestUtil.getParameterMap(requestHttp);
-		String[] paras = { "stuid", "name", "grade", "classInfo","homeLink"};
+		String[] paras = { "stuid", "name", "grade", "classInfo", "homeLink" };
 		boolean flag = RequestUtil.validate(paras, requestParams);
 		if (flag == false) {
 			logger.error(ApiResultInfo.ResultMsg.RequiredParasError);
@@ -668,12 +671,44 @@ public class UserController {
 		}
 		return new ApiResult(response);
 	}
+
 	@RequestMapping("addUsers")
 	private @ResponseBody ApiResult addMultiUser(HttpServletRequest requestHttp, HttpServletResponse responseHttp,
-			@RequestParam(value = "excel", required = false) MultipartFile excel) throws IOException {
-				
-		return null;
+			@RequestParam(value = "excel[]", required = false) MultipartFile excel) throws Exception {
+		if (excel.isEmpty()) {
+			logger.debug("get the excelfile error");
+			return ApiResultFactory.getLackParasError();
+		}
+		InputStream in = null;
+		List<List<Object>> listob = null;
+		in = excel.getInputStream();
+		listob = new ImportExcelUtil().getUserListByExcel(in, excel.getOriginalFilename());
+		InsertMultiUserRequest request = new InsertMultiUserRequest();
+		if(listob.size()==0){
+			logger.debug("parse the excelfile error");
+			return ApiResultFactory.getLackParasError();
+		}
+		request.setList(listob);
+		BasicResponse response = null;
+		try {
+			logger.debug("start to insert excel data using userService ");
+			response = userService.multiInsertUser(request);
+		} catch (Exception e) {
+			// TODO: handle exception
+			logger.error(ApiResultInfo.ResultMsg.ServerError);
+			return ApiResultFactory.getServerError();
+		}
+		if (response == null) {
+			logger.debug("fail to delete the notice response");
+			return ApiResultFactory.getServerError();
+		}
+		//// 通过返回码的数值，判断服务结果是否为正确的结果
+		if (response.getCode() != 0) {
+
+			logger.error("there are errors in service");
+			return new ApiResult(response.getCode(), response.getMsg());
+		}
+		return new ApiResult(response);
 	}
-	
 
 }

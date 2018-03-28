@@ -18,6 +18,7 @@ import com.platform.rmodel.user.GradeInfoResponse;
 import com.platform.rmodel.user.Head_urlUpdateRequest;
 import com.platform.rmodel.user.Head_urlUpdateResponse;
 import com.platform.rmodel.user.HomePageResponse;
+import com.platform.rmodel.user.InsertMultiUserRequest;
 import com.platform.rmodel.user.JudgeIsLoginRequest;
 import com.platform.rmodel.user.JudgeIsLoginResponse;
 import com.platform.rmodel.user.LoginRequest;
@@ -127,6 +128,8 @@ public interface UserService {
 	 * @return
 	 */
 	public BasicResponse addManager(addManagerRequest request);
+	
+	public  BasicResponse multiInsertUser(InsertMultiUserRequest request);
 	
 	
 	

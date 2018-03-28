@@ -216,8 +216,11 @@ public interface UserDAO {
 	 */
 	@Insert("insert into user(stuid,name,isManager,virtual_homepage,create_time)values(#{stuid},#{name},#{isManager},#{virtual_homepage},#{create_time})")
 	public Integer insertManager(@Param("stuid") String stuid,@Param("name") String name,@Param("isManager") Integer isManager,@Param("virtual_homepage") String virtual_homepage,@Param("create_time") Integer create_time);
-	
-		
+	/**
+	 * 批量插入用户
+	 * @param list
+	 */
+	public void insertMultiUser(@Param("list") List<User> list);	
 	
 	
 	

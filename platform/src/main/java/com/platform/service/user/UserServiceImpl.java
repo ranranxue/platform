@@ -34,6 +34,7 @@ import com.platform.rmodel.user.GradeInfoResponse;
 import com.platform.rmodel.user.Head_urlUpdateRequest;
 import com.platform.rmodel.user.Head_urlUpdateResponse;
 import com.platform.rmodel.user.HomePageResponse;
+import com.platform.rmodel.user.InsertMultiUserRequest;
 import com.platform.rmodel.user.JudgeIsLoginRequest;
 import com.platform.rmodel.user.JudgeIsLoginResponse;
 import com.platform.rmodel.user.LoginRequest;
@@ -939,5 +940,37 @@ public class UserServiceImpl implements UserService {
 		   }
 		}
 		return null;
+	}
+
+	public BasicResponse multiInsertUser(InsertMultiUserRequest request) {
+		// TODO Auto-generated method stub
+		List<List<Object>> listob=request.getList();
+		List<User> listUser=new ArrayList<User>();
+		for(int i=0;i<listob.size();i++){
+			User user=new User();
+			user.setStuid(String.valueOf(listob.get(i).get(0)));
+			user.setName(String.valueOf(listob.get(i).get(1)));
+			user.setGender(String.valueOf(listob.get(i).get(2)));
+			user.setGrade(String.valueOf(listob.get(i).get(3)));
+			user.setClass_info(String.valueOf(listob.get(i).get(4)));
+			user.setVirtual_homepage(String.valueOf(listob.get(i).get(5)));
+			user.setCreate_time((int) TimeUtil.getCurrentTime(TimeData.TimeFormat.YMD));
+			listUser.add(user);	
+		}
+		try {
+			logger.debug("start to insert user info using userDAO");
+			userDAO.insertMultiUser(listUser);
+		} catch (Exception e) {
+			// TODO: handle exception
+			logger.error("userDAO error", e);
+			BasicResponse response = new BasicResponse();
+			response.setCode(ApiResultInfo.ResultCode.ServerError);
+			response.setMsg(ApiResultInfo.ResultMsg.ServerError);
+			return response;
+		}
+		BasicResponse response = new BasicResponse();
+		response.setCode(0);
+		response.setMsg("insert multi user successfully!");
+		return response;
 	}
 }
