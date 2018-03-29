@@ -19,9 +19,8 @@
 	</delete>
 	<insert id="insertMultiUser"  parameterType="java.util.List">
 	    insert ignore into user (stuid,name,nickname,gender,grade,class_info,isManager,virtual_homepage,create_time) values
-	    <foreach collection="list" item="item" index="index" open="("
-			close=")" separator="," >
-			#{item.stuid},#{item.name},#{item.name},#{item.gender},#{item.grade},#{item.class_info},#{item.isManager},#{item.virtual_homepage},#{item.create_time}
+	    <foreach collection="list" item="item" index="index"  separator="," >
+			(#{item.stuid},#{item.name},#{item.name},#{item.gender},#{item.grade},#{item.class_info},#{item.isManager},#{item.virtual_homepage},#{item.create_time})
 	    </foreach>	
 	</insert>
 </mapper>
