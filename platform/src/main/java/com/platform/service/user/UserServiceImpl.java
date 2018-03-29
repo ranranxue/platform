@@ -948,6 +948,7 @@ public class UserServiceImpl implements UserService {
 		List<User> listUser=new ArrayList<User>();
 		for(int i=0;i<listob.size();i++){
 			User user=new User();
+			logger.debug(String.valueOf(listob.get(i).get(0)));
 			user.setStuid(String.valueOf(listob.get(i).get(0)));
 			user.setName(String.valueOf(listob.get(i).get(1)));
 			user.setGender(String.valueOf(listob.get(i).get(2)));

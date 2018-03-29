@@ -64,6 +64,7 @@ public class ImportExcelUtil {
 					logger.debug("the row's first cell num is"+row.getFirstCellNum());
 					logger.debug("the row's last cell num is"+row.getLastCellNum());
 					cell = row.getCell(y);
+					logger.debug("cell value is"+this.getCellValue(cell));
 					li.add(this.getCellValue(cell));
 				}
 				list.add(li);
