@@ -967,6 +967,7 @@ public class UserServiceImpl implements UserService {
 			logger.debug(String.valueOf(listob.get(i).get(5)));
 			user.setVirtual_homepage(String.valueOf(listob.get(i).get(5)));
 			user.setCreate_time((int) TimeUtil.getCurrentTime(TimeData.TimeFormat.YMD));
+			user.setIsManager(0);
 			listUser.add(user);	
 		}
 		try {
