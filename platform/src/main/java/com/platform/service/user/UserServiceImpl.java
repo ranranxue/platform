@@ -950,10 +950,21 @@ public class UserServiceImpl implements UserService {
 			User user=new User();
 			logger.debug(String.valueOf(listob.get(i).get(0)));
 			user.setStuid(String.valueOf(listob.get(i).get(0)));
+			logger.debug(String.valueOf(listob.get(i).get(1)));
 			user.setName(String.valueOf(listob.get(i).get(1)));
-			user.setGender(String.valueOf(listob.get(i).get(2)));
+			logger.debug(String.valueOf(listob.get(i).get(2)));
+			String gender=null;
+			if(String.valueOf(listob.get(i).get(2))=="男"){
+				gender="1";
+			}else{
+				gender="0";
+			}
+			user.setGender(gender);
+			logger.debug(String.valueOf(listob.get(i).get(3)));
 			user.setGrade(String.valueOf(listob.get(i).get(3)));
+			logger.debug(String.valueOf(listob.get(i).get(4)));
 			user.setClass_info(String.valueOf(listob.get(i).get(4)));
+			logger.debug(String.valueOf(listob.get(i).get(5)));
 			user.setVirtual_homepage(String.valueOf(listob.get(i).get(5)));
 			user.setCreate_time((int) TimeUtil.getCurrentTime(TimeData.TimeFormat.YMD));
 			listUser.add(user);	

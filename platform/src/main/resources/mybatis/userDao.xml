@@ -18,10 +18,10 @@
 		</foreach>
 	</delete>
 	<insert id="insertMultiUser"  parameterType="java.util.List">
-	    insert into user (stuid,name,gender,grade,class_info,create_time) values
+	    insert into user (stuid,name,gender,grade,class_info,virtual_homepage,create_time) values
 	    <foreach collection="list" item="item" index="index" open="("
 			close=")" separator="," >
-			#{item.stuid},#{item.name},#{item.gender},#{item.class_info},#{item.create_time}
+			#{item.stuid},#{item.name},#{item.gender},#{item.grade}#{item.class_info},#{item.virtual_homepage},#{item.create_time}
 	    </foreach>	
 	</insert>
 </mapper>

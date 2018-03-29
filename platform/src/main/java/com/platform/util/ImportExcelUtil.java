@@ -45,7 +45,7 @@ public class ImportExcelUtil {
 				continue;
 			}
 			// 遍历当前的sheet中的所有行
-			for (int j = sheet.getFirstRowNum(); j < sheet.getLastRowNum(); j++) {
+			for (int j = sheet.getFirstRowNum()+1; j < sheet.getLastRowNum()+1; j++) {
 				
 				logger.debug("first row num is"+sheet.getFirstRowNum());
 				logger.debug("last row num is"+sheet.getLastRowNum());
