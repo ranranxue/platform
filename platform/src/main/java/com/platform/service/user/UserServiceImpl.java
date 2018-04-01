@@ -17,7 +17,6 @@ import com.platform.model.BasicResponse;
 import com.platform.model.Login;
 import com.platform.model.Manage_scope;
 import com.platform.model.User;
-
 import com.platform.rmodel.user.AddDetailIntroRequest;
 import com.platform.rmodel.user.AddDetailIntroResponse;
 import com.platform.rmodel.user.AddUserRequest;
@@ -652,10 +651,10 @@ public class UserServiceImpl implements UserService {
 	public AddDetailIntroResponse addDetailIntro(AddDetailIntroRequest request) {
 		// TODO Auto-generated method stub
 		Integer updateNum = -1;
+		String virHome=null;
 		try {
 			logger.debug("update the detai_intro from user db using stuid " + request.getStuid());
 			updateNum = userDAO.updateUserDetailIntro(request.getStuid(), request.getContent());
-
 		} catch (Exception e) {
 			// TODO: handle exception
 			logger.error("userService error", e);
@@ -670,14 +669,53 @@ public class UserServiceImpl implements UserService {
 			response.setCode(ApiResultInfo.ResultCode.ServerError);
 			response.setMsg(ApiResultInfo.ResultMsg.ServerError);
 			return response;
-
 		} else {
-			logger.debug("update the detail_intro successfully!");
-			AddDetailIntroResponse response = new AddDetailIntroResponse();
-			response.setCode(0);
-			response.setMsg(" update the detail_intro successfully!");
-			return response;
-
+			List<WorkInfo> worksList=null;
+			try {
+				logger.debug("get works list from works db");
+				worksList=worksDAO.getMyAllWorks(request.getStuid());
+			} catch (Exception e) {
+				// TODO: handle exception
+				logger.error("worksDAO error", e);
+				AddDetailIntroResponse response = new AddDetailIntroResponse();
+				response.setCode(ApiResultInfo.ResultCode.ServerError);
+				response.setMsg(ApiResultInfo.ResultMsg.ServerError);
+				return response;
+			}
+			if(worksList!=null){
+				try {
+					logger.debug(" get virtual_home from user db");
+					virHome=userDAO.getVirLink(request.getStuid());	
+				} catch (Exception e) {
+					// TODO: handle exception
+					logger.error("userDAo error", e);
+					AddDetailIntroResponse response = new AddDetailIntroResponse();
+					response.setCode(ApiResultInfo.ResultCode.ServerError);
+					response.setMsg(ApiResultInfo.ResultMsg.ServerError);
+					return response;	
+				}
+				if(virHome==null){
+					logger.debug("fail to get the virHome");
+					AddDetailIntroResponse response = new AddDetailIntroResponse();
+					response.setCode(ApiResultInfo.ResultCode.ServerError);
+					response.setMsg(ApiResultInfo.ResultMsg.ServerError);
+					return response;		
+				}else{
+					logger.debug("update the detail_intro successfully!");
+					AddDetailIntroResponse response = new AddDetailIntroResponse();
+					response.setCode(0);
+					response.setMsg(" update the detail_intro successfully!");
+					response.setContent(request.getContent());
+					response.setWorksList(worksList);	
+					return response;	
+				}
+			}else{
+				logger.debug("fail to get the worksList");
+				AddDetailIntroResponse response = new AddDetailIntroResponse();
+				response.setCode(ApiResultInfo.ResultCode.ServerError);
+				response.setMsg(ApiResultInfo.ResultMsg.ServerError);
+				return response;		
+			}
 		}
 	}
 

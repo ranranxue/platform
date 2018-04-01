@@ -528,15 +528,15 @@ public class UserController {
 
 	}
 
-	@RequestMapping("detail_submit")
+	@RequestMapping("detail/submit")
 	private @ResponseBody ApiResult submitUserDetailIntro(HttpServletRequest requestHttp,
 			HttpServletResponse responseHttp) {
 		responseHttp.setHeader("Access-Control-Allow-Origin", "*");
 		Map<String, String> requestParams = RequestUtil.getParameterMap(requestHttp);
-		String[] paras = { "content" };
+		String[] paras = { "detail" ,"stuid"};
 		AddDetailIntroRequest request = new AddDetailIntroRequest();
 		request.setContent(requestParams.get(paras[0]));
-		request.setStuid("201492136");
+		request.setStuid(requestParams.get(paras[1]));
 		AddDetailIntroResponse response = null;
 		try {
 			logger.debug(" start to add detail intro using userService");

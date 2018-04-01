@@ -220,7 +220,15 @@ public interface UserDAO {
 	 * 批量插入用户
 	 * @param list
 	 */
-	public void insertMultiUser(@Param("list") List<User> list);	
+	public void insertMultiUser(@Param("list") List<User> list);
+	/**
+	 * 根据学号获取虚拟主页
+	 * @param stuid
+	 * @return
+	 */
+	@Select("select virtual_homepage from user where stuid=#{stuid}")
+	public String getVirLink(@Param("stuid") String stuid);
+	
 	
 	
 	
