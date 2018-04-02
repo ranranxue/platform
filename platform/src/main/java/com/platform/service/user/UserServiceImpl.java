@@ -694,13 +694,17 @@ public class UserServiceImpl implements UserService {
 					response.setMsg(ApiResultInfo.ResultMsg.ServerError);
 					return response;	
 				}
+				logger.debug("virHomeLink value is"+virHome);
+				
 				if(virHome==null){
+					
 					logger.debug("fail to get the virHome");
 					AddDetailIntroResponse response = new AddDetailIntroResponse();
 					response.setCode(ApiResultInfo.ResultCode.ServerError);
 					response.setMsg(ApiResultInfo.ResultMsg.ServerError);
 					return response;		
 				}else{
+					logger.debug(virHome.length());
 					logger.debug("update the detail_intro successfully!");
 					AddDetailIntroResponse response = new AddDetailIntroResponse();
 					response.setCode(0);
