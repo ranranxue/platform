@@ -47,7 +47,7 @@ public interface WorksDAO {
 	 * @param notice
 	 * @return
 	 */
-	@Insert("insert into works(title,works_url,upload_time) values(#{title},#{works_url},#{upload_time};")
+	@Insert("insert into works(title,works_url,author_id,upload_time) values(#{title},#{works_url},#{author_id},#{upload_time})")
 	@SelectKey(statement = "SELECT LAST_INSERT_ID() ", keyProperty = "id", before = false, resultType = int.class)
 	public Integer insertWorks(Works works);
 	

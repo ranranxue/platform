@@ -109,11 +109,12 @@ public class WorksController {
 	private @ResponseBody ApiResult uploadWorks(HttpServletRequest requestHttp) {
 		Map<String, String> requestParams = RequestUtil.getParameterMap(requestHttp);
 		String[] paras = { "ticket", "title", "works_url" };
-		boolean flag = RequestUtil.validate(paras, requestParams);
+		/*boolean flag = RequestUtil.validate(paras, requestParams);
+		
 		if (flag == false) {
 			logger.error(ApiResultInfo.ResultMsg.RequiredParasError);
 			return ApiResultFactory.getLackParasError();
-		}
+		}*/
 		String stuid = RedisUtil.get(requestParams.get(paras[0]));
 		UploadWorksRequest request = new UploadWorksRequest();
 		request.setStuid(stuid);

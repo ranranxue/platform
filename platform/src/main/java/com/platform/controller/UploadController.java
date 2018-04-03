@@ -46,7 +46,7 @@ public class UploadController {
 	private @ResponseBody ApiResult uploadAsy(HttpServletRequest requestHttp, HttpServletResponse responseHttp,
 			@RequestParam(value = "platformfile[]", required = false) List<MultipartFile> platformfiles) throws IOException {
 		responseHttp.setHeader("Access-Control-Allow-Origin", "*");
-		List<String> fileOrgNameList=new ArrayList<String>();
+		List<String> fileOrgNameList=new ArrayList<String>(); 
 		List<String> fileNewNameList=new ArrayList<String>();
 		if(!platformfiles.isEmpty()){
 			for(int i=0;i<platformfiles.size();i++){
