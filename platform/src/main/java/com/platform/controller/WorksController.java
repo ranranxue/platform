@@ -45,16 +45,15 @@ public class WorksController {
 	@RequestMapping("works/delete")
 	private @ResponseBody ApiResult deleteWorks(HttpServletRequest requestHttp, HttpServletResponse responseHttp,
 			@RequestParam(value = "deleteList[]", required = false) List<String> worksIdList) throws IOException {
-		
-		
+
 		WorksDeleteRequest request = new WorksDeleteRequest();
-		Integer worksIdLength=worksIdList.size();
+		Integer worksIdLength = worksIdList.size();
 		logger.debug(worksIdLength);
-		List<Integer> idList=new ArrayList<Integer>();
-		for(int i=0;i<worksIdLength;i++){
+		List<Integer> idList = new ArrayList<Integer>();
+		for (int i = 0; i < worksIdLength; i++) {
 			idList.add(DataTypePaserUtil.StringToInteger(worksIdList.get(i)));
 		}
-		
+
 		request.setWorksIdList(idList);
 		BasicResponse response = null;
 		try {
@@ -81,7 +80,7 @@ public class WorksController {
 
 	@RequestMapping("works")
 	private @ResponseBody ApiResult showExWorksList(HttpServletRequest requestHttp) {
-		
+
 		// request.setWorks_id(DataTypePaserUtil.StringToInteger(requestParams.get(paras[0])));
 		WorksListResponse response = null;
 		try {
@@ -109,7 +108,7 @@ public class WorksController {
 	@RequestMapping("works/upload")
 	private @ResponseBody ApiResult uploadWorks(HttpServletRequest requestHttp) {
 		Map<String, String> requestParams = RequestUtil.getParameterMap(requestHttp);
-		String[] paras = { "ticket", "title","works_url" };
+		String[] paras = { "ticket", "title", "works_url" };
 		boolean flag = RequestUtil.validate(paras, requestParams);
 		if (flag == false) {
 			logger.error(ApiResultInfo.ResultMsg.RequiredParasError);
@@ -124,6 +123,41 @@ public class WorksController {
 		UploadWorksResponse response = null;
 		try {
 			logger.debug("start to upload the works using worksService");
+			response = worksService.uploadWorks(request);
+		} catch (Exception e) {
+			// TODO: handle exception
+			logger.error(ApiResultInfo.ResultMsg.ServerError);
+			return ApiResultFactory.getServerError();
+		}
+		// 判断服务是否正常返回
+		if (response == null) {
+			logger.debug("fail to get uploadWorks response from worksService");
+			return ApiResultFactory.getServerError();
+		}
+		// 通过返回码的数值，判断服务结果是否为正确的结果
+		if (response.getCode() != 0) {
+			logger.error("there are errors in service");
+			return new ApiResult(response.getCode(), response.getMsg());
+		}
+		return new ApiResult(response);
+	}
+
+	@RequestMapping("userWorks/upload")
+	private @ResponseBody ApiResult uploadUserWorks(HttpServletRequest requestHttp) {
+		Map<String, String> requestParams = RequestUtil.getParameterMap(requestHttp);
+		String[] paras = { "stuid", "title", "works_url" };
+		boolean flag = RequestUtil.validate(paras, requestParams);
+		if (flag == false) {
+			logger.error(ApiResultInfo.ResultMsg.RequiredParasError);
+			return ApiResultFactory.getLackParasError();
+		}
+		UploadWorksRequest request = new UploadWorksRequest();
+		request.setStuid(requestParams.get(paras[0]));
+		request.setTitle(requestParams.get(paras[1]));
+		request.setWorks_url(requestParams.get(paras[2]));
+		UploadWorksResponse response = null;
+		try {
+			logger.debug("upload user works using worksService");
 			response = worksService.uploadWorks(request);
 		} catch (Exception e) {
 			// TODO: handle exception
